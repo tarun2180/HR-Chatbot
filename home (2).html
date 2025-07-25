@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Interface</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B5CF6;
+            --secondary-color: #D946EF;
+            --background-color: #1E1E1E;
+            --card-background: #2A2A2A;
+            --text-color: #FFFFFF;
+            --text-secondary: #A0A0A0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .user-greeting {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .camera-icon {
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, #8B5CF6, #D946EF);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-content {
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .premium-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .premium-robot-icon {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 4px;
+        }
+
+        .premium-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .premium-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .robot-image {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .explore-card {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            min-height: 180px;
+        }
+
+        .explore-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .explore-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .explore-icon i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .explore-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .explore-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 40px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .explore-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .premium-card {
+                max-width: 600px;
+                margin: 32px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="user-greeting">
+            Hello 👋,<br>
+           <b> Dignities</b>
+        </div>
+        <div class="camera-icon">
+            <i class="fas fa-camera"></i>
+        </div>
+    </div>
+
+    <div class="premium-card">
+        <div class="premium-content">
+            <div class="premium-title">
+                <svg class="premium-robot-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#8B5CF6"/>
+                    <circle cx="8.5" cy="10.5" r="1.5" fill="#8B5CF6"/>
+                    <circle cx="15.5" cy="10.5" r="1.5" fill="#8B5CF6"/>
+                    <path d="M12 16c-1.5 0-2.8-.8-3.5-2h7c-.7 1.2-2 2-3.5 2z" fill="#8B5CF6"/>
+                    <path d="M17 7.5c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zM7 7.5c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5z" fill="#8B5CF6"/>
+                </svg>
+                Premium Plan
+            </div>
+            <div class="premium-description">Unlock your AI chatboat & get<br>all premium features</div>
+            <button class="premium-button">Coming soon !</button>
+        </div>
+        <img src="robot.png" alt="Robot" class="robot-image">
+    </div>
+
+    <div class="section-title">Explore our AI Agents 🤖</div>
+    <div class="explore-grid">
+        <div class="explore-card" onclick="talkWithAI()">
+            <div class="explore-icon">
+                <i class="fas fa-microphone"></i>
+            </div>
+            <div class="explore-title">Talk with AI</div>
+            <div class="explore-description">Have a natural conversation with our AI using voice commands and speech recognition.</div>
+        </div>
+        <div class="explore-card" onclick="chatWithBot()">
+            <div class="explore-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="explore-title">Chat with Bot</div>
+            <div class="explore-description">Text-based interaction with our AI assistant for quick responses and help.</div>
+        </div>
+    </div>
+
+    <script>
+        // Add click handlers for the cards
+        document.querySelectorAll('.explore-card').forEach(card => {
+            card.removeEventListener('click', null);
+        });
+
+        // Premium button click handler
+        document.querySelector('.premium-button').addEventListener('click', function() {
+            console.log('Premium button clicked');
+            // Add your premium subscription logic here
+        });
+
+        // Camera icon click handler
+        document.querySelector('.camera-icon').addEventListener('click', function() {
+            console.log('Camera icon clicked');
+            // Add your camera functionality here
+        });
+
+        function talkWithAI() {
+            window.location.href = 'index2.html';
+        }
+
+        function chatWithBot() {
+            window.location.href = '#';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & ML BOT Onboarding</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #8B5CF6;
+            --secondary-color: #D946EF;
+            --background-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary: #A0A0A0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 1000;
+        }
+
+        .navbar h2 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--background-color);
+            border-radius: 30px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            position: relative;
+            pointer-events: all;
+        }
+
+        .animation-container {
+            width: 280px;
+            height: 280px;
+            margin: 20px 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .skip-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+
+        .next-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .next-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--primary-color);
+        }
+
+        .chat-home {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .chat-home.active {
+            display: block;
+        }
+
+        .mascot-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 40px auto;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 32px 0;
+        }
+
+        .topic-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topic-tag:hover {
+            background: rgba(139, 92, 246, 0.3);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
+            padding: 12px 32px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .register-btn {
+            background: var(--primary-color);
+            border: none;
+            color: var(--text-color);
+            padding: 12px 32px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .auth-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-color);
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .auth-screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .auth-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .skip-signin {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .screen {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-between;
+                padding: 0 50px;
+            }
+
+            .content {
+                max-width: 50%;
+            }
+
+            .animation-container {
+                width: 400px;
+                height: 400px;
+            }
+
+            .buttons {
+                justify-content: flex-start;
+            }
+
+            .progress-dots {
+                position: absolute;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h2>AI & ML BOT</h2>
+    </nav>
+
+    <div class="container">
+        <!-- Screen 1 -->
+        <div class="screen active" id="screen1">
+            <div class="content">
+                <h1>Welcome to AI Chat</h1>
+                <p>Experience the future of conversation with our advanced AI chatbot. Get ready for an amazing journey!</p>
+                <div class="buttons">
+                    <button class="skip-btn" onclick="goToLastScreen()">Skip</button>
+                    <button class="next-btn" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+            <div class="animation-container" id="animation1"></div>
+        </div>
+
+        <!-- Screen 2 -->
+        <div class="screen" id="screen2">
+            <div class="content">
+                <h1>Smart Features</h1>
+                <p>From coding assistance to creative arts, our AI can help you with various tasks and make your life easier.</p>
+                <div class="buttons">
+                    <button class="skip-btn" onclick="goToLastScreen()">Skip</button>
+                    <button class="next-btn" onclick="nextScreen()">Next</button>
+                </div>
+            </div>
+            <div class="animation-container" id="animation2"></div>
+        </div>
+
+        <!-- Screen 3 -->
+        <div class="screen" id="screen3">
+            <div class="content">
+                <h1>Let's Get Started</h1>
+                <p>Your AI assistant is ready to help. Start chatting and discover the possibilities!</p>
+                <div class="buttons">
+                    <button class="next-btn" onclick="finish()">Get Started</button>
+                </div>
+            </div>
+            <div class="animation-container" id="animation3"></div>
+        </div>
+
+        <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <div class="chat-home" id="chatHome">
+        <div class="mascot-container">
+            <div id="robotAnimation"></div>
+            <div class="floating-elements">
+                <div class="floating-circle" style="background: var(--primary-color); width: 20px; height: 20px; top: 10%; left: 0;"></div>
+                <div class="floating-circle" style="background: var(--secondary-color); width: 15px; height: 15px; top: 20%; right: 10%;"></div>
+                <div class="floating-circle" style="border: 2px solid var(--primary-color); width: 25px; height: 25px; bottom: 15%; left: 15%;"></div>
+            </div>
+        </div>
+
+        <h1>Chat with AI</h1>
+        
+        <div class="topic-tags">
+            <div class="topic-tag">Design</div>
+            <div class="topic-tag">Branding</div>
+            <div class="topic-tag">Friendship</div>
+            <div class="topic-tag">New world</div>
+            <div class="topic-tag">T20 world cup</div>
+            <div class="topic-tag">Corporate</div>
+            <div class="topic-tag">Health</div>
+            <div class="topic-tag">Yoga</div>
+            <div class="topic-tag">Discipline</div>
+        </div>
+
+        <div class="auth-buttons">
+            <button class="login-btn">Login</button>
+            <button class="register-btn">Register</button>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div class="auth-screen" id="loginScreen">
+        <button class="close-btn" onclick="closeAuth()">&times;</button>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Login to continue your journey</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="next-btn" style="width: 100%">Login</button>
+            </form>
+            <div class="auth-footer">
+                <a href="#" onclick="showRegister()">Don't have an account? Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div class="auth-screen" id="registerScreen">
+        <button class="close-btn" onclick="closeAuth()">&times;</button>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Join our AI community today</p>
+            </div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="next-btn" style="width: 100%">Create Account</button>
+            </form>
+            <div class="auth-footer">
+                <a href="#" onclick="showLogin()">Already have an account? Login</a>
+            </div>
+            <div class="skip-signin" onclick="skipSignin()">Skip signin</div>
+        </div>
+    </div>
+
+    <script>
+        // Load Lottie animations
+        const animation1 = lottie.loadAnimation({
+            container: document.getElementById('animation1'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets2.lottiefiles.com/packages/lf20_GxMZME.json' // Robot wave animation
+        });
+
+        const animation2 = lottie.loadAnimation({
+            container: document.getElementById('animation2'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets9.lottiefiles.com/packages/lf20_xyadoh9h.json' // Features animation
+        });
+
+        const animation3 = lottie.loadAnimation({
+            container: document.getElementById('animation3'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets3.lottiefiles.com/packages/lf20_gssu2dkm.json' // Rocket launch animation
+        });
+
+        // Initialize the robot animation
+        const robotAnimation = lottie.loadAnimation({
+            container: document.getElementById('robotAnimation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets8.lottiefiles.com/packages/lf20_xyadoh9h.json' // Robot animation
+        });
+
+        let currentScreen = 0;
+        const screens = document.querySelectorAll('.screen');
+        const dots = document.querySelectorAll('.dot');
+
+        function nextScreen() {
+            if (currentScreen < 2) {
+                currentScreen++;
+                updateScreens();
+            }
+        }
+
+        function goToLastScreen() {
+            currentScreen = 2;
+            updateScreens();
+        }
+
+        function updateScreens() {
+            screens.forEach((screen, index) => {
+                if (index === currentScreen) {
+                    screen.classList.add('active');
+                } else {
+                    screen.classList.remove('active');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                if (index === currentScreen) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function finish() {
+            document.querySelector('.container').style.display = 'none';
+            const chatHome = document.getElementById('chatHome');
+            chatHome.classList.add('active');
+        }
+
+        function showLogin() {
+            document.getElementById('registerScreen').classList.remove('active');
+            document.getElementById('loginScreen').classList.add('active');
+        }
+
+        function showRegister() {
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('registerScreen').classList.add('active');
+        }
+
+        function closeAuth() {
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('registerScreen').classList.remove('active');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            // Add your login logic here
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            console.log('Login:', { email, password });
+            // For demo purposes, just close the auth screen
+            closeAuth();
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            // Add your registration logic here
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            console.log('Register:', { name, email, password });
+            // For demo purposes, just close the auth screen
+            closeAuth();
+        }
+
+        function skipSignin() {
+            window.location.href = 'home (2).html';
+        }
+
+        // Update the click handlers for login and register buttons
+        document.querySelector('.login-btn').onclick = showLogin;
+        document.querySelector('.register-btn').onclick = showRegister;
+    </script>
+</body>
+</html>
